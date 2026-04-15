@@ -3,6 +3,10 @@ import webbrowser
 import pyttsx3
 import requests
 from datetime import datetime
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 recognizer = sr.Recognizer()
 engine = pyttsx3.init()
@@ -19,7 +23,6 @@ def processCommand(c):
         speak("Opening Google")
         webbrowser.open("https://google.com")
 
-    elif "open youtube" in c.lower():   # Open YT
         speak("Opening YouTube")
         webbrowser.open("https://youtube.com")
 
@@ -55,7 +58,8 @@ def processCommand(c):
 
         speak("Fetching latest score")
 
-        url = "https://api.cricapi.com/v1/currentMatches?apikey=5ab0ce63-45b0-4a13-9d7a-472445d3864e"
+        api_key = os.getenv("CRIC_API_KEY")
+        url = f"https://api.cricapi.com/v1/currentMatches?apikey={api_key}"
     
         try:
             response = requests.get(url)
@@ -90,7 +94,8 @@ def processCommand(c):
 
         speak("Fetching weather")
 
-        url = "https://api.openweathermap.org/data/2.5/weather?q=Jaipur&appid=4a1939b340bb6e17bc6cefb9797335a2&units=metric"
+        weather_key = os.getenv("WEATHER_API_KEY")
+        url = f"https://api.openweathermap.org/data/2.5/weather?q=Jaipur&appid={weather_key}&units=metric"
 
         response = requests.get(url)
         data = response.json()
